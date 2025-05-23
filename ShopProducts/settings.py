@@ -7,12 +7,8 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ENV_SECRET_KEY = os.getenv("ENV_SECRET_KEY")
-# В будущем сделать так что бы для дебаг была одна БД, для прода - другая БД
-ENV_DEBUG = os.getenv("ENV_DEBUG") == "True"
-
-SECRET_KEY = ENV_SECRET_KEY
-DEBUG = ENV_DEBUG
+SECRET_KEY = os.getenv("ENV_SECRET_KEY")
+DEBUG = os.getenv("ENV_DEBUG") == "True"
 
 ALLOWED_HOSTS = []
 
