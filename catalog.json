@@ -1,0 +1,68 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Категория 1",
+      "description": "Категория безалкогольной продукции"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Категория 2",
+      "description": "Описание Тест"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "Категория 3",
+      "description": "Описание Тест 3"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+      "name": "Категория 4",
+      "description": "Описание Тест 4"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 5,
+    "fields": {
+      "name": "Категория 5",
+      "description": "Описание Тест 5"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "Terragon",
+      "description": "Напиток без алк.",
+      "image": "products/images/579_pop.png",
+      "category": 1,
+      "price": 60,
+      "created_at": "2025-05-23T06:37:15.469Z",
+      "updated_at": "2025-05-23T06:37:15.469Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "Товар 5",
+      "description": "Описание товара 5",
+      "image": "",
+      "category": 5,
+      "price": 1232,
+      "created_at": "2025-05-23T06:56:59.928Z",
+      "updated_at": "2025-05-23T06:56:59.928Z"
+    }
+  }
+]
