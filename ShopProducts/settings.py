@@ -7,8 +7,12 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv("ENV_SECRET_KEY")
-DEBUG = os.getenv("ENV_DEBUG") == "True"
+ENV_SECRET_KEY = os.getenv("ENV_SECRET_KEY")
+# В будущем сделать так что бы для дебаг была одна БД, для прода - другая БД
+ENV_DEBUG = os.getenv("ENV_DEBUG") == "True"
+
+SECRET_KEY = ENV_SECRET_KEY
+DEBUG = ENV_DEBUG
 
 ALLOWED_HOSTS = []
 
@@ -52,13 +56,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "ShopProducts.wsgi.application"
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'PORT': os.getenv('DATABASE_PORT', default='5432'),
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -87,7 +87,5 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / 'static']
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
