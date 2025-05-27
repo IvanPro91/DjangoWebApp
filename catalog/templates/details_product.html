@@ -24,7 +24,7 @@
                     <li>-Дата обновления: {{ product.updated_at|date:"Y-m-d" }}</li>
                     <li>-Описание товара: {{ product.description|truncatechars:100 }}</li>
                 </ul>
-                <button type="button" class="btn btn-lg btn-block btn-outline-primary">Подробнее</button>
+                <a type="button" class="btn btn-lg btn-block btn-outline-primary" href="{% url 'catalog:home' %}">Вернутся</a>
             </div>
         </div>
     </div>
