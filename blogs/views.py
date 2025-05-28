@@ -33,5 +33,4 @@ class BlogsListView(ListView):
     model = Blogs
 
     def get_queryset(self):
-        # Получаем только активные объекты
         return Blogs.objects.filter(publication = True)
