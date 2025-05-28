@@ -1,4 +1,4 @@
-from django.forms import ModelForm, forms
+from django.forms import ModelForm
 
 from catalog.models import Product
 
@@ -27,14 +27,13 @@ class ProductForm(ModelForm):
 
         self.fields['price'].widget.attrs.update({
             'class': 'form-control',
-            'type': 'numeric'
+            'type': 'number'
         })
 
     def clean_price(self):
         price = self.cleaned_data.get('price')
-        if price is not None:
-            if price < 0:
-                self.add_error('price', f'Цена не может быть меньше 0')
+        if price and price < 0:
+            self.add_error('price', f'Цена не может быть меньше 0')
         return price
 
     def clean(self):
