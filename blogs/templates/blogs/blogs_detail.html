@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+
+{% block title %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Блог: {{ object.title }}</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="col-3">
+    <div class="card" style="width: 18rem;">
+        <img src="{{ object.image | media_filter }}" class="card-img-top" alt="{{ object.title }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ object.title }}</h5>
+            <p class="card-text">{{ object.content }}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Описание: {{ object.content }}</li>
+            <li class="list-group-item">Просмотры: {{ object.views }}</li>
+        </ul>
+        <div class="card-body">
+            <a href="{% url 'blogs:update_blog' object.pk %}" class="card-link">Редактировать</a>
+            <a href="{% url 'blogs:delete_blog' object.pk %}" class="card-link">Удалить</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
