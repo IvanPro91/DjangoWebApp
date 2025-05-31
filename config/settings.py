@@ -1,18 +1,15 @@
 import os
 from pathlib import Path
 
+from django.conf.global_settings import AUTH_USER_MODEL, LOGIN_REDIRECT_URL, LOGOUT_REDIRECT_URL
 from dotenv import load_dotenv
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-ENV_SECRET_KEY = os.getenv("ENV_SECRET_KEY")
-# В будущем сделать так что бы для дебаг была одна БД, для прода - другая БД
-ENV_DEBUG = os.getenv("ENV_DEBUG") == "True"
-
-SECRET_KEY = ENV_SECRET_KEY
-DEBUG = ENV_DEBUG
+SECRET_KEY = os.getenv("ENV_SECRET_KEY")
+DEBUG = os.getenv("ENV_DEBUG") == "True"
 
 ALLOWED_HOSTS = []
 
@@ -23,7 +20,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "users",
     "catalog",
+    "blogs",
+
 ]
 
 MIDDLEWARE = [
@@ -36,7 +36,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "ShopProducts.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
@@ -53,7 +53,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "ShopProducts.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASES = {
     "default": {
@@ -86,6 +86,18 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [BASE_DIR / "static"]
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = "users.User"
+LOGIN_REDIRECT_URL = "/home/"
+LOGOUT_REDIRECT_URL = "/home/"
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = os.getenv("ENV_EMAIL_USER")
+EMAIL_HOST_PASSWORD = os.getenv("ENV_EMAIL_PASSWORD")
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True

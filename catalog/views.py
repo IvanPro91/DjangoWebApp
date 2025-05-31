@@ -1,15 +1,42 @@
-from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import (
+    ListView,
+    DetailView,
+    TemplateView,
+    CreateView,
+    DeleteView,
+    UpdateView,
+)
 
+from catalog.forms import ProductForm
 from catalog.models import Product
 
 
-def view_page_home(request):
-    products = Product.objects.all()
-    return render(request, "home.html", {"products": products})
+class HomePageView(ListView):
+    model = Product
 
-def view_page_contacts(request):
-    return render(request, "contacts.html")
 
-def view_detail_product(request, id_product):
-    product = get_object_or_404(Product, pk=id_product)
-    return render(request, "details_product.html", {"product": product})
+class ProductDetailView(DetailView, LoginRequiredMixin):
+    model = Product
+
+
+class ContactPageView(TemplateView, LoginRequiredMixin):
+    template_name = "contacts.html"
+
+
+class ProductCreateView(CreateView, LoginRequiredMixin):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy("catalog:home")
+
+
+class ProductDeleteView(DeleteView, LoginRequiredMixin):
+    model = Product
+    success_url = reverse_lazy("catalog:home")
+
+
+class ProductUpdateView(UpdateView, LoginRequiredMixin):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy("catalog:home")

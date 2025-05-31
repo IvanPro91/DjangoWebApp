@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+
+{% block title %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h3>Skystore</h3>
+    <p>Skystore - это отличный вариант хранения ваших плагинов и примеров кода, который вы бы хотели продать</p>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group me-2">
+            <a type="button" class="btn btn-block btn-outline-primary" href="{% url 'catalog:create_product' %}">Создать
+                продукт</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% for product in object_list %}
+    <div class="col-2">
+        <div class="card mb-4 box-shadow">
+            <img src="{{ product.image | media_filter }}" class="img-thumbnail" alt="{{ product.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                <p class="card-text">{{ product.price }}руб.</p>
+            </div>
+            <a type="button" class="btn btn-sm btn-block btn-outline-primary"
+               href="{% url 'catalog:details_product' product.id %}">Подробнее</a>
+            <a type="button" class="btn btn-sm btn-block btn-outline-primary"
+               href="{% url 'catalog:update_product' product.pk %}">Изменить</a>
+            <a type="button" class="btn btn-sm btn-block btn-danger"
+               href="{% url 'catalog:delete_product' product.pk %}">Удалить</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
