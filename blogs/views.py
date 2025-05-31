@@ -1,17 +1,25 @@
-from django.http import Http404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
+from django.views.generic import (
+    CreateView,
+    ListView,
+    UpdateView,
+    DeleteView,
+    DetailView,
+)
 
+from blogs.forms import BlogsForm
 from blogs.models import Blogs
 
 
 class BlogCreateView(CreateView):
     model = Blogs
-    fields = ("title", "content", "image", "publication")
+    form_class = BlogsForm
     success_url = reverse_lazy("blogs:home_blogs")
+
 
 class BlogDetailsView(DetailView):
     model = Blogs
+    form_class = BlogsForm
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
@@ -22,15 +30,18 @@ class BlogDetailsView(DetailView):
 
 class BlogUpdateView(UpdateView):
     model = Blogs
-    fields = ("title", "content", "image", "publication")
+    form_class = BlogsForm
     success_url = reverse_lazy("blogs:home_blogs")
+
 
 class BlogDeleteView(DeleteView):
     model = Blogs
     success_url = reverse_lazy("blogs:home_blogs")
 
+
 class BlogsListView(ListView):
     model = Blogs
+    form_class = BlogsForm
 
     def get_queryset(self):
-        return Blogs.objects.filter(publication = True)
+        return Blogs.objects.filter(publication=True)
