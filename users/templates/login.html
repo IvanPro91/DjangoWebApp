@@ -2,7 +2,7 @@
 
 {% block title %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h3>Создание продукта</h3>
+    <h3>Вход пользователя</h3>
 </div>
 {% endblock %}
 
@@ -12,16 +12,14 @@
         <div class="card-body">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.non_field_errors }}
                 {{ form.as_p }}
 
                 <button class="btn active" type="submit">
-                    {% if object %}
-                    Сохранить
-                    {% else %}
-                    Создать
-                    {% endif %}
+                    Войти
                 </button>
+                <a class="btn active" type="submit" href="{% url 'users:registration' %}">
+                    Зарегистрироваться
+                </a>
             </form>
         </div>
     </div>
