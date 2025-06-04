@@ -2,6 +2,12 @@ from django.db import models
 
 
 class Category(models.Model):
+    """
+    Модель для хранения информации о группах продуктов.
+    Meta:
+        verbose_name (str): Отображаемое имя модели в единственном числе (Категория).
+        verbose_name_plural (str): Отображаемое имя модели во множественном числе (Категории).
+    """
     name = models.CharField(
         max_length=100, blank=False, null=False, verbose_name="наименование"
     )
@@ -16,6 +22,12 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    """
+    Модель для хранения информации о продукте. Связана с :model:'catalog.Category'.
+    Meta:
+        verbose_name (str): Отображаемое имя модели в единственном числе (Продукт).
+        verbose_name_plural (str): Отображаемое имя модели во множественном числе (Продукты).
+    """
     name = models.CharField(
         max_length=100, blank=False, null=False, verbose_name="наименование"
     )

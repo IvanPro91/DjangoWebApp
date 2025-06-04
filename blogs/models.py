@@ -2,6 +2,12 @@ from django.db import models
 
 
 class Blogs(models.Model):
+    """
+    Модель для хранения информации о благах
+    Meta:
+        verbose_name (str): Отображаемое имя модели в единственном числе (Блог).
+        verbose_name_plural (str): Отображаемое имя модели во множественном числе (Блоги).
+    """
     title = models.CharField(
         max_length=100, blank=False, null=False, verbose_name="заголовок"
     )
