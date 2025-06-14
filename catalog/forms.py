@@ -1,6 +1,28 @@
 from django.forms import ModelForm
-
 from catalog.models import Product
+
+
+
+class ModerationProductForm(ModelForm):
+    """
+    Форма модератора отображения в html :model:'Product'
+    Meta:
+        fields - отображение колонок
+    """
+    class Meta:
+        model = Product
+        fields = ("name", "description")
+
+
+class ProductsModeratorForm(ModelForm):
+    """
+    Форма формирования отображения в html :model:'Product'
+    Meta:
+        fields - отображение колонок
+    """
+    class Meta:
+        model = Product
+        fields = ("status",)
 
 
 class ProductForm(ModelForm):
