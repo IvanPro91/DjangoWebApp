@@ -27,10 +27,14 @@
             </div>
             <a type="button" class="btn btn-sm btn-block btn-outline-primary"
                href="{% url 'catalog:details_product' product.id %}">Подробнее</a>
+            {% if perms.catalog.can_unpublish_product or user == product.owner %}
             <a type="button" class="btn btn-sm btn-block btn-outline-primary"
                href="{% url 'catalog:update_product' product.pk %}">Изменить</a>
+            {% endif %}
+            {% if perms.catalog.can_delete_product or user == product.owner %}
             <a type="button" class="btn btn-sm btn-block btn-danger"
                href="{% url 'catalog:delete_product' product.pk %}">Удалить</a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

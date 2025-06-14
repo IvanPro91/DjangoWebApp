@@ -4,6 +4,9 @@ from catalog.models import Product, Category
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    """
+    Регистрация модели :model:'Product' в кабинете администратора
+    """
     list_display = (
         "id",
         "name",
@@ -16,6 +19,9 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
+    """
+    Регистрация модели :model:'Category' в кабинете администратора
+    """
     list_display = (
         "id",
         "name",
