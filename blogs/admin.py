@@ -4,6 +4,9 @@ from blogs.models import Blogs
 
 @admin.register(Blogs)
 class BlogsAdmin(admin.ModelAdmin):
+    """
+    Регистрация модели :model:'Blogs' в кабинете администратора
+    """
     list_display = (
         "id",
         "title",

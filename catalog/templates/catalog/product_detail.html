@@ -12,47 +12,47 @@
     <div class="col-4">
         <img src="{{ product.image | media_filter }}" class="img-thumbnail" alt="{{ object.name }}">
     </div>
-    <div class="col-3">
+    <div class="col-8">
         <h5>{{ object.name }}</h5>
 
         <div class="mb-1 row">
-          <label class="col-sm-2 col-form-label">Цена</label>
-          <div class="col-sm-10">
+          <label class="col-sm-3 col-form-label">Цена</label>
+          <div class="col-sm-8">
             <input type="text" readonly class="form-control-plaintext" value="{{ object.price }}руб.">
           </div>
         </div>
 
         <div class="mb-1 row">
-          <label class="col-sm-6 col-form-label">Категория:</label>
-          <div class="col-sm-6">
+          <label class="col-sm-3 col-form-label">Категория:</label>
+          <div class="col-sm-8">
             <input type="text" readonly class="form-control-plaintext" value="{{ object.category.name }}">
           </div>
         </div>
 
         <div class="mb-1 row">
-          <label class="col-sm-6 col-form-label">Описание категории:</label>
-          <div class="col-sm-6">
+          <label class="col-sm-3 col-form-label">Описание категории:</label>
+          <div class="col-sm-8">
             <input type="text" readonly class="form-control-plaintext" value="{{ object.category.description }}">
           </div>
         </div>
 
         <div class="mb-1 row">
-          <label class="col-sm-6 col-form-label">Дата создания:</label>
-          <div class="col-sm-6">
+          <label class="col-sm-3 col-form-label">Дата создания:</label>
+          <div class="col-sm-8">
             <input type="text" readonly class="form-control-plaintext" value="{{ object.created_at|date:"d.m.Y H:i" }}">
           </div>
         </div>
 
         <div class="mb-1 row">
-          <label class="col-sm-6 col-form-label">Дата обновления:</label>
-          <div class="col-sm-6">
+          <label class="col-sm-3 col-form-label">Дата обновления:</label>
+          <div class="col-sm-8">
             <input type="text" readonly class="form-control-plaintext" value="{{ object.updated_at|date:"Y-m-d H:i" }}">
           </div>
         </div>
 
         <div class="mb-1 row">
-          <label class="col-sm-6 col-form-label">Описание товара:</label>
-          <div class="col-sm-6">
+          <label class="col-sm-3 col-form-label">Описание товара:</label>
+          <div class="col-sm-8">
             <input type="text" readonly class="form-control-plaintext" value="{{ object.description|truncatechars:100 }}">
           </div>
         </div>
