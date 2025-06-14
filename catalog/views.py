@@ -1,7 +1,10 @@
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django.views.generic import (
     ListView,
     DetailView,
@@ -12,7 +15,8 @@ from django.views.generic import (
 )
 
 from catalog.forms import ProductForm, ModerationProductForm, ProductsModeratorForm
-from catalog.models import Product
+from catalog.models import Product, Category
+from catalog.services import get_list_products
 
 
 class HomePageView(ListView):
@@ -24,7 +28,15 @@ class HomePageView(ListView):
     """
     model = Product
 
+    def get_queryset(self):
+        queryset = cache.get('products_list')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('products_list', queryset, 60 * 15)
+        return queryset
 
+
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class ProductDetailView(LoginRequiredMixin, DetailView):
     """
     Уровень представления просмотра деталей продукта :model:'Product'
@@ -33,7 +45,7 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
     :template:'templates/catalog/product_detail.html'
     """
     model = Product
-
+    template_name = "catalog/product_detail.html"
 
 
 class ContactPageView(LoginRequiredMixin, TemplateView):
@@ -95,3 +107,20 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         if user.has_perm('can_unpublish_product'):
             return ProductsModeratorForm
         raise PermissionDenied
+
+class ListProductsCategoryDetailView(DetailView):
+    model = Category
+    template_name = 'catalog/products_by_category.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cat_id = self.kwargs.get('pk')
+        context["categories"] = get_list_products(cat_id)
+        return context
+
+    def get_queryset(self):
+        queryset = cache.get('list_products')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('list_products', queryset, 60 * 15)  # Кешируем данные на 15 минут
+        return queryset
