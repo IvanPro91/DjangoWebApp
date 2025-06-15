@@ -68,17 +68,6 @@ class ProductForm(ModelForm):
             self.add_error("price", f"Цена не может быть меньше 0")
         return price
 
-    def save(self, owner=None):
-        """
-        Сохранение формы с автоматическим заполнением владельца
-        """
-        product = super().save(commit=False)
-
-        if owner:
-            product.owner = owner
-        #product.save()
-        return product
-
     def clean(self):
         """
         Получение значения name и проверка на отсутствие слов которые не должны попасть в форму

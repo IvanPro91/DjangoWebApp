@@ -74,8 +74,8 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("catalog:home")
 
     def form_valid(self, form):
-        # Передаем текущего пользователя как владельца
-        form.save(owner=self.request.user)
+        obj = form.save(commit=False)
+        obj.owner = self.request.user
         return super().form_valid(form)
 
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
