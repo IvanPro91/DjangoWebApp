@@ -29,11 +29,15 @@ class HomePageView(ListView):
     model = Product
 
     def get_queryset(self):
-        queryset = cache.get('products_list')
-        if not queryset:
-            queryset = super().get_queryset()
-            cache.set('products_list', queryset, 60 * 15)
-        return queryset
+        cache_key = 'products_list_ids'
+        product_ids = cache.get(cache_key)
+
+        if not product_ids:
+            queryset = super().get_queryset().values_list('id', flat=True)
+            product_ids = list(queryset)
+            cache.set(cache_key, product_ids, 60 * 15)
+
+        return Product.objects.filter(id__in=product_ids).select_related('category', 'owner')
 
 
 @method_decorator(cache_page(60 * 15), name='dispatch')
@@ -68,6 +72,11 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.owner = self.request.user
+        return super().form_valid(form)
 
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """
