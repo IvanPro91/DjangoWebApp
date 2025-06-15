@@ -33,7 +33,7 @@ class ProductForm(ModelForm):
     """
     class Meta:
         model = Product
-        fields = "__all__"
+        exclude = ("owner",)
 
     def __init__(self, *args, **kwargs):
         """
@@ -67,6 +67,17 @@ class ProductForm(ModelForm):
         if price and price < 0:
             self.add_error("price", f"Цена не может быть меньше 0")
         return price
+
+    def save(self, owner=None):
+        """
+        Сохранение формы с автоматическим заполнением владельца
+        """
+        product = super().save(commit=False)
+
+        if owner:
+            product.owner = owner
+        #product.save()
+        return product
 
     def clean(self):
         """
