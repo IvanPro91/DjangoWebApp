@@ -37,11 +37,9 @@ class BlogDetailsView(DetailView):
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
-        if self.request.user == self.object.owner:
-            obj.views += 1
-            obj.save()
-            return obj
-        return HttpResponseForbidden
+        obj.views += 1
+        obj.save()
+        return obj
 
 class BlogUpdateView(UpdateView):
     """
