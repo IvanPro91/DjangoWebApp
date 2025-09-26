@@ -73,3 +73,13 @@ class Product(models.Model):
             ("can_unpublish_product", "Право на публикацию товара"),
             ("can_delete_product", "Право на удаление продукта"),
         ]
+
+
+class MessageFeedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    phone = models.CharField(max_length=15)
+    message = models.TextField()
+
+    def __str__(self):
+        return f"{self.name} {self.phone} {self.message}"
