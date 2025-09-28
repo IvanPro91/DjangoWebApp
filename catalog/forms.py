@@ -33,7 +33,7 @@ class ProductForm(ModelForm):
     """
     class Meta:
         model = Product
-        fields = "__all__"
+        exclude = ("owner",)
 
     def __init__(self, *args, **kwargs):
         """
