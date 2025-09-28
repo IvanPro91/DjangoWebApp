@@ -12,8 +12,15 @@
         <div class="card-body">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form.as_p }}
-
+                <div class="row col-12">
+                    <div class="col-6">
+                        {{ form.username }}
+                    </div>
+                    <br>
+                    <div class="col-6">
+                        {{ form.password }}
+                    </div>
+                </div>
                 <button class="btn active" type="submit">
                     Войти
                 </button>

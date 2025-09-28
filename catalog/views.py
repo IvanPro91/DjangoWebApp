@@ -1,8 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
-from django.urls import reverse_lazy
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.generic import (
@@ -15,7 +18,7 @@ from django.views.generic import (
 )
 
 from catalog.forms import ProductForm, ModerationProductForm, ProductsModeratorForm
-from catalog.models import Product, Category
+from catalog.models import Product, Category, MessageFeedback
 from catalog.services import get_list_products
 
 
@@ -29,15 +32,11 @@ class HomePageView(ListView):
     model = Product
 
     def get_queryset(self):
-        cache_key = 'products_list_ids'
-        product_ids = cache.get(cache_key)
-
-        if not product_ids:
-            queryset = super().get_queryset().values_list('id', flat=True)
-            product_ids = list(queryset)
-            cache.set(cache_key, product_ids, 60 * 15)
-
-        return Product.objects.filter(id__in=product_ids).select_related('category', 'owner')
+        queryset = cache.get('products_list')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('products_list', queryset, 60 * 15)
+        return queryset
 
 
 @method_decorator(cache_page(60 * 15), name='dispatch')
@@ -73,10 +72,6 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
 
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.owner = self.request.user
-        return super().form_valid(form)
 
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """
@@ -133,3 +128,24 @@ class ListProductsCategoryDetailView(DetailView):
             queryset = super().get_queryset()
             cache.set('list_products', queryset, 60 * 15)  # Кешируем данные на 15 минут
         return queryset
+
+def get_feedback(request: HttpRequest):
+    post_data = request.POST
+    if post_data:
+        user = request.user
+        name = post_data.get("name")
+        phone = post_data.get("phone")
+        message = post_data.get("message")
+        if not name or not phone or not message:
+            messages.error(request, "ass you")
+            return redirect(reverse("catalog:contacts"))
+
+        message_feedback = MessageFeedback.objects.get_or_create(
+            user = user,
+            name = name,
+            phone = phone,
+            message = message
+        )
+        print(message_feedback, name, phone, message)
+    messages.success(request, "успешно сохранено!")
+    return redirect(reverse("catalog:contacts"))
